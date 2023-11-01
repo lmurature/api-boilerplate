@@ -46,7 +46,7 @@ func TestUsersService_RegisterUser_HashErrorPasswordTooLarge(t *testing.T) {
 
 	res, err := service.RegisterUser(context.Background(), users.RegisterUserRequest{
 		UserData: &users.User{},
-		Password: "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
+		Password: []byte("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"),
 	})
 	assert.Nil(t, res)
 	assert.NotNil(t, err)
