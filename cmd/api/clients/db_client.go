@@ -3,6 +3,7 @@ package clients
 import (
 	"database/sql"
 	"fmt"
+	"github.com/lmurature/api-boilerplate/cmd/api/config"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -15,7 +16,11 @@ type DbClient struct {
 func NewDbClient() *DbClient {
 	database := &DbClient{}
 	var err error
-	url := fmt.Sprintf("%s:%s@tcp(%s)/%s", "root", "root", "localhost", "users_db")
+	url := fmt.Sprintf("%s:%s@tcp(%s)/%s",
+		config.GetDbUser(),
+		config.GetDbPass(),
+		config.GetDbHost(),
+		config.GetDbName())
 	database.Client, err = sql.Open("mysql", url)
 	if err != nil {
 		fmt.Println("LUCIO")
