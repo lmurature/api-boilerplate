@@ -112,11 +112,21 @@ func (s *UsersService) RefreshUserToken(ctx context.Context, request users.Refre
 		return nil, err
 	}
 
+	newRefreshToken, err := auth_utils.GenerateToken(request.UserID, auth_utils.TokenTypeRefresh)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := s.usersDao.UpdateUserRefreshToken(ctx, request.UserID, *newRefreshToken); err != nil {
+		logger_utils.Logger.Println("Successfully rotated refresh token for user ", request.UserID)
+		return nil, err
+	}
+
 	return &users.AuthenticateUserResponse{
 		AccessToken:  *accessToken,
 		TokenType:    auth_utils.Bearer,
 		ExpiresIn:    config.AccessTokenExpirationMs,
 		UserId:       request.UserID,
-		RefreshToken: request.RefreshToken,
+		RefreshToken: *newRefreshToken,
 	}, nil
 }

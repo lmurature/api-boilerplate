@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/lmurature/api-boilerplate/cmd/api/config"
 	"github.com/lmurature/api-boilerplate/cmd/api/domain/apierrors"
 	"net/http"
 	"strconv"
@@ -34,7 +35,7 @@ func Authenticate(c *gin.Context) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte("SECRET"), nil
+		return []byte(config.GetAuthKey()), nil
 	})
 	if jwtErr != nil {
 		apiErr := apierrors.NewUnauthorizedApiError(jwtErr.Error())

@@ -27,7 +27,7 @@ func GenerateToken(userId int64, tokenType string) (*string, apierrors.ApiError)
 	claims["exp"] = expirationTime
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	signed, err := token.SignedString([]byte("SECRET"))
+	signed, err := token.SignedString([]byte(config.GetAuthKey()))
 	if err != nil {
 		return nil, apierrors.NewInternalServerApiError(err.Error(), err)
 	}

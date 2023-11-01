@@ -9,11 +9,16 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const (
+	driverName = "mysql"
+)
+
 type DbClient struct {
 	Client *sql.DB
 }
 
 func NewDbClient() *DbClient {
+	sql.Drivers()
 	database := &DbClient{}
 	var err error
 	url := fmt.Sprintf("%s:%s@tcp(%s)/%s",
@@ -21,9 +26,8 @@ func NewDbClient() *DbClient {
 		config.GetDbPass(),
 		config.GetDbHost(),
 		config.GetDbName())
-	database.Client, err = sql.Open("mysql", url)
+	database.Client, err = sql.Open(driverName, url)
 	if err != nil {
-		fmt.Println("LUCIO")
 		panic(err)
 	}
 	database.Client.SetConnMaxLifetime(time.Minute * 3)

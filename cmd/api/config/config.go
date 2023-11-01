@@ -17,6 +17,10 @@ var (
 	dbName = os.Getenv("DB_NAME")
 	dbUser = os.Getenv("DB_USER")
 	dbPass = os.Getenv("DB_PASS")
+
+	port = os.Getenv("PORT")
+
+	authKey = os.Getenv("AUTH_KEY")
 )
 
 func GetCorsConfig() cors.Config {
@@ -27,6 +31,10 @@ func GetCorsConfig() cors.Config {
 		AllowAllOrigins:  true,
 		MaxAge:           12 * time.Hour,
 	}
+}
+
+func GetPort() string {
+	return port
 }
 
 func GetDbHost() string {
@@ -43,4 +51,8 @@ func GetDbUser() string {
 
 func GetDbPass() string {
 	return dbPass
+}
+
+func GetAuthKey() string {
+	return authKey
 }
